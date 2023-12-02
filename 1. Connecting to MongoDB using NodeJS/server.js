@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-// load all the environment 
-dotenv.config();
+import './env.js';
 
 // 1. Import Exprerss
 import express from 'express';
