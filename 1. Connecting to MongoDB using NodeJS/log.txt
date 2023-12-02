@@ -26,3 +26,4 @@
  Sat Dec 02 2023 20:59:30 GMT+0530 (India Standard Time) - /api/users/signup - {"email":"user3@gmail.com","password":1234,"name":"mayur 2","type":"seller"}
  Sat Dec 02 2023 21:06:04 GMT+0530 (India Standard Time) - /api/users/signup - {"email":"user3@gmail.com","password":1234,"name":"mayur 2","type":"seller"}
  Sat Dec 02 2023 21:38:38 GMT+0530 (India Standard Time) - /api/users/signup - {"email":"user3@gmail.com","password":1234,"name":"User 2","type":"seller"}
+ Sat Dec 02 2023 21:51:39 GMT+0530 (India Standard Time) - /api/users/signup - {"email":"user3@gmail.com","password":1234}
