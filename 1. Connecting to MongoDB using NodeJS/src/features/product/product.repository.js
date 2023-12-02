@@ -6,6 +6,7 @@ class ProductRepository {
   constructor() {
     this.collection = 'products';
   }
+  //   Here start adding new product
   async add(newProduct) {
     try {
       // Get the db
@@ -19,6 +20,7 @@ class ProductRepository {
       throw new ApplicationError('Something went wrong with the database', 500);
     }
   }
+  //   Here find start all product
   async getAll() {
     try {
       // 1. get the db
@@ -31,6 +33,7 @@ class ProductRepository {
       throw new ApplicationError('Something went wrong with the database', 500);
     }
   }
+  //   Here find by id
   async get(id) {
     try {
       // 1. get the db
@@ -41,6 +44,27 @@ class ProductRepository {
     } catch (error) {
       console.log(error);
       throw new ApplicationError('Something went wrong with the database', 500);
+    }
+  }
+  //   here filter start
+  async filter(minPrice, maxPrice, category) {
+    try {
+      const db = getDB();
+      const collection = db.collection(this.collection);
+      let filterExpression = {};
+      if (minPrice) {
+        filterExpression.price = { $gte: parseFloat(minPrice) };
+      }
+      if (maxPrice) {
+        filterExpression.price = { ...filterExpression.price,$lte: parseFloat(maxPrice) };
+      }
+      if (category) {
+        filterExpression.category = category;
+      }
+      return await collection.find(filterExpression).toArray();
+    } catch (error) {
+      console.log(error);
+      throw new ApplicationError('Something went wrong with database', 500);
     }
   }
 }
