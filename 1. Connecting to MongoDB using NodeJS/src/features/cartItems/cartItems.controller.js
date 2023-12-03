@@ -18,10 +18,15 @@ export class CartItemsController {
     }
   }
 
-  get(req, res) {
-    const userID = req.userID;
-    const items = CartItemModel.get(userID);
-    return res.status(200).send(items);
+  async get(req, res) {
+    try {
+      const userID = req.userID;
+      const items = await this.cartRepository.get(userID);
+      return res.status(200).send(items);
+    } catch (err) {
+      console.log(err);
+      throw new ApplicationError('Something went wrong with database', 500);
+    }
   }
 
   delete(req, res) {

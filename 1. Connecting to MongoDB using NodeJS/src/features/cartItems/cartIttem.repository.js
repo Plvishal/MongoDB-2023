@@ -23,6 +23,18 @@ class CartItemsRepository {
       throw new ApplicationError('Something went wrong with database', 500);
     }
   }
+
+  //   Get cart Items by the Id
+  async get(userID) {
+    try {
+      const db = getDB();
+      const collection = db.collection(this.collection);
+      return await collection.find({ userID: new ObjectId(userID) }).toArray();
+    } catch (err) {
+      console.log(err);
+      throw new ApplicationError('Something went wrong with database', 500);
+    }
+  }
 }
 
 export default CartItemsRepository;
