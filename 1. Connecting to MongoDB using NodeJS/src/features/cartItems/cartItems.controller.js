@@ -29,12 +29,12 @@ export class CartItemsController {
     }
   }
 
-  delete(req, res) {
+  async delete(req, res) {
     const userID = req.userID;
     const cartItemID = req.params.id;
-    const error = CartItemModel.delete(cartItemID, userID);
-    if (error) {
-      return res.status(404).send(error);
+    const isDeleted = await this.cartRepository.delete(userID, cartItemID);
+    if (!isDeleted) {
+      return res.status(404).send('Items not found');
     }
     return res.status(200).send('Cart item is removed');
   }
