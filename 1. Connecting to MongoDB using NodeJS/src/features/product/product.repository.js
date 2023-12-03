@@ -56,12 +56,35 @@ class ProductRepository {
         filterExpression.price = { $gte: parseFloat(minPrice) };
       }
       if (maxPrice) {
-        filterExpression.price = { ...filterExpression.price,$lte: parseFloat(maxPrice) };
+        filterExpression.price = {
+          ...filterExpression.price,
+          $lte: parseFloat(maxPrice),
+        };
       }
       if (category) {
         filterExpression.category = category;
       }
       return await collection.find(filterExpression).toArray();
+    } catch (error) {
+      console.log(error);
+      throw new ApplicationError('Something went wrong with database', 500);
+    }
+  }
+
+  //   Rating given by the user
+  rate(userID, productId, rating) {
+    // console.log( productId);
+    try {
+      const db = getDB();
+      const collection = db.collection(this.collection);
+      collection.updateOne(
+        {
+          _id: new ObjectId(productId),
+        },
+        {
+          $push: { ratings: { userID: new ObjectId(userID), rating } },
+        }
+      );
     } catch (error) {
       console.log(error);
       throw new ApplicationError('Something went wrong with database', 500);

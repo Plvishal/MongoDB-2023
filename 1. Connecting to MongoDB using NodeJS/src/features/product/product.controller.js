@@ -36,14 +36,15 @@ export default class ProductController {
   }
 
   rateProduct(req, res, next) {
-    console.log(req.query);
     try {
-      const userID = req.query.userID;
-      const productID = req.query.productID;
-      const rating = req.querys.rating;
-      ProductModel.rateProduct(userID, productID, rating);
+      const userID = req.userID;
+      const productID = req.query.productId;
+
+      const rating = req.query.rating;
+      this.productRepository.rate(userID, productID, rating);
       return res.status(200).send('Rating has been added');
     } catch (err) {
+      console.log(err);
       console.log('Passing error to middleware');
       next(err);
     }
