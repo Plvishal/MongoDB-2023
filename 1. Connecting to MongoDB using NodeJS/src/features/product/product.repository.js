@@ -72,12 +72,12 @@ class ProductRepository {
   }
 
   //   Rating given by the user
-  rate(userID, productId, rating) {
+  async rate(userID, productId, rating) {
     // console.log( productId);
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
-      collection.updateOne(
+     await  collection.updateOne(
         {
           _id: new ObjectId(productId),
         },
