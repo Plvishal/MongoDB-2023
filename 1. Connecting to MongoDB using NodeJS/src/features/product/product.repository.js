@@ -72,19 +72,40 @@ class ProductRepository {
   }
 
   //   Rating given by the user
-  async rate(userID, productId, rating) {
+  async rate(userID, productID, rating) {
     // console.log( productId);
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
-     await  collection.updateOne(
-        {
-          _id: new ObjectId(productId),
-        },
-        {
-          $push: { ratings: { userID: new ObjectId(userID), rating } },
-        }
-      );
+      // 1.find the product
+      const product = await collection.findOne({
+        _id: new ObjectId(productID),
+      });
+      // 2. find the rating
+      const userRating = product?.ratings?.find((r) => r.userID == userID);
+      if (userRating) {
+        // 3. update the rating
+        await collection.updateOne(
+          {
+            _id: new ObjectId(productID),
+            'ratings.userID': new ObjectId(userID),
+          },
+          {
+            $set: {
+              'ratings.$.rating': rating,
+            },
+          }
+        );
+      } else {
+        await collection.updateOne(
+          {
+            _id: new ObjectId(productID),
+          },
+          {
+            $push: { ratings: { userID: new ObjectId(userID), rating } },
+          }
+        );
+      }
     } catch (error) {
       console.log(error);
       throw new ApplicationError('Something went wrong with database', 500);
