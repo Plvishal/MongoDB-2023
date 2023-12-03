@@ -7,17 +7,28 @@ class CartItemsRepository {
     this.collection = 'cartItems';
   }
   async add(productID, userID, quantity) {
+    console.log(productID, userID, quantity);
+
     try {
       // 1. Get the database
       const db = getDB();
       // 2. Get the collection
       const collection = db.collection(this.collection);
       // 3. Add  into the cart
-      await collection.insertOne({
-        productID: new ObjectId(productID),
-        userID: new ObjectId(userID),
-        quantity,
-      });
+      await collection.updateOne(
+        {
+          productID: new ObjectId(productID),
+          userID: new ObjectId(userID),
+        },
+        {
+          $inc: {
+            quantity: quantity,
+          },
+        },
+        {
+          upsert: true,
+        }
+      );
     } catch (err) {
       console.log(err);
       throw new ApplicationError('Something went wrong with database', 500);
